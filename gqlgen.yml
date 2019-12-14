@@ -4,15 +4,15 @@
 # for detailed .gqlgen.yml documentation.
 
 schema:
-- "schema/**/*.graphql"
+- "graphql/**/*.graphql"
 
 exec:
   filename: generated/generated.go
   package: generated
 
 model:
-  filename: models/generated.go
-  package: models
+  filename: schema/generated.go
+  package: schema
 
 struct_tag: json
 
