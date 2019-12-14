@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/camisetags/monster_duel_api_go/database"
-	"github.com/camisetags/monster_duel_api_go/models"
+	"github.com/camisetags/monster_duel_api_go/repos"
 	"github.com/camisetags/monster_duel_api_go/schema"
 )
 
@@ -13,10 +13,8 @@ import (
 
 func (r *queryResolver) Cards(ctx context.Context) ([]*schema.Card, error) {
 	db := database.GetDBConnection()
-	cm := &models.CardModel{}
-	cards := cm.GetCards(10, db)	
+	repo := &repos.CardRepo{}
+	cards := repo.GetCards(10, db)
 
-	
-
-	return , nil
+	return cards, nil
 }
