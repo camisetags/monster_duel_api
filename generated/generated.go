@@ -12,7 +12,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/camisetags/monster_duel_api_go/models"
+	"github.com/camisetags/monster_duel_api_go/schema"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
@@ -91,7 +91,7 @@ type ComplexityRoot struct {
 }
 
 type QueryResolver interface {
-	Cards(ctx context.Context) ([]*models.Card, error)
+	Cards(ctx context.Context) ([]*schema.Card, error)
 }
 
 type executableSchema struct {
@@ -382,11 +382,11 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var parsedSchema = gqlparser.MustLoadSchema(
-	&ast.Source{Name: "schema/queries.graphql", Input: `type Query {
+	&ast.Source{Name: "graphql/queries.graphql", Input: `type Query {
   cards: [Card!]!
 }
 `},
-	&ast.Source{Name: "schema/types.graphql", Input: `type Card {
+	&ast.Source{Name: "graphql/types.graphql", Input: `type Card {
   id: ID!
   name: String
   type: String
@@ -487,7 +487,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _BanList_ban_tcg(ctx context.Context, field graphql.CollectedField, obj *models.BanList) (ret graphql.Marshaler) {
+func (ec *executionContext) _BanList_ban_tcg(ctx context.Context, field graphql.CollectedField, obj *schema.BanList) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -521,7 +521,7 @@ func (ec *executionContext) _BanList_ban_tcg(ctx context.Context, field graphql.
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BanList_ban_ocg(ctx context.Context, field graphql.CollectedField, obj *models.BanList) (ret graphql.Marshaler) {
+func (ec *executionContext) _BanList_ban_ocg(ctx context.Context, field graphql.CollectedField, obj *schema.BanList) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -555,7 +555,7 @@ func (ec *executionContext) _BanList_ban_ocg(ctx context.Context, field graphql.
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_id(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_id(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -592,7 +592,7 @@ func (ec *executionContext) _Card_id(ctx context.Context, field graphql.Collecte
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_name(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_name(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -626,7 +626,7 @@ func (ec *executionContext) _Card_name(ctx context.Context, field graphql.Collec
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_type(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_type(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -660,7 +660,7 @@ func (ec *executionContext) _Card_type(ctx context.Context, field graphql.Collec
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_desc(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_desc(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -694,7 +694,7 @@ func (ec *executionContext) _Card_desc(ctx context.Context, field graphql.Collec
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_atk(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_atk(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -728,7 +728,7 @@ func (ec *executionContext) _Card_atk(ctx context.Context, field graphql.Collect
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_def(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_def(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -762,7 +762,7 @@ func (ec *executionContext) _Card_def(ctx context.Context, field graphql.Collect
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_level(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_level(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -796,7 +796,7 @@ func (ec *executionContext) _Card_level(ctx context.Context, field graphql.Colle
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_race(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_race(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -830,7 +830,7 @@ func (ec *executionContext) _Card_race(ctx context.Context, field graphql.Collec
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_attribute(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_attribute(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -864,7 +864,7 @@ func (ec *executionContext) _Card_attribute(ctx context.Context, field graphql.C
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_card_sets(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_card_sets(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -892,13 +892,13 @@ func (ec *executionContext) _Card_card_sets(ctx context.Context, field graphql.C
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.CardSet)
+	res := resTmp.([]*schema.CardSet)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOCardSet2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardSet(ctx, field.Selections, res)
+	return ec.marshalOCardSet2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardSet(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_card_prices(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_card_prices(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -926,13 +926,13 @@ func (ec *executionContext) _Card_card_prices(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.CardPrice)
+	res := resTmp.(*schema.CardPrice)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOCardPrice2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardPrice(ctx, field.Selections, res)
+	return ec.marshalOCardPrice2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardPrice(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_archetype(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_archetype(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -966,7 +966,7 @@ func (ec *executionContext) _Card_archetype(ctx context.Context, field graphql.C
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_linkval(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_linkval(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1000,7 +1000,7 @@ func (ec *executionContext) _Card_linkval(ctx context.Context, field graphql.Col
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_fname(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_fname(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1034,7 +1034,7 @@ func (ec *executionContext) _Card_fname(ctx context.Context, field graphql.Colle
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_rank(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_rank(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1068,7 +1068,7 @@ func (ec *executionContext) _Card_rank(ctx context.Context, field graphql.Collec
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_linkmarkers(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_linkmarkers(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1102,7 +1102,7 @@ func (ec *executionContext) _Card_linkmarkers(ctx context.Context, field graphql
 	return ec.marshalOString2ᚕᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_banlist_info(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_banlist_info(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1130,13 +1130,13 @@ func (ec *executionContext) _Card_banlist_info(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.BanList)
+	res := resTmp.(*schema.BanList)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOBanList2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐBanList(ctx, field.Selections, res)
+	return ec.marshalOBanList2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐBanList(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_format(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_format(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1170,7 +1170,7 @@ func (ec *executionContext) _Card_format(ctx context.Context, field graphql.Coll
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_sort(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_sort(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1204,7 +1204,7 @@ func (ec *executionContext) _Card_sort(ctx context.Context, field graphql.Collec
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_la(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_la(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1238,7 +1238,7 @@ func (ec *executionContext) _Card_la(ctx context.Context, field graphql.Collecte
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Card_scale(ctx context.Context, field graphql.CollectedField, obj *models.Card) (ret graphql.Marshaler) {
+func (ec *executionContext) _Card_scale(ctx context.Context, field graphql.CollectedField, obj *schema.Card) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1272,7 +1272,7 @@ func (ec *executionContext) _Card_scale(ctx context.Context, field graphql.Colle
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _CardPrice_cardmarket_price(ctx context.Context, field graphql.CollectedField, obj *models.CardPrice) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardPrice_cardmarket_price(ctx context.Context, field graphql.CollectedField, obj *schema.CardPrice) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1306,7 +1306,7 @@ func (ec *executionContext) _CardPrice_cardmarket_price(ctx context.Context, fie
 	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _CardPrice_tcgplayer_price(ctx context.Context, field graphql.CollectedField, obj *models.CardPrice) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardPrice_tcgplayer_price(ctx context.Context, field graphql.CollectedField, obj *schema.CardPrice) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1340,7 +1340,7 @@ func (ec *executionContext) _CardPrice_tcgplayer_price(ctx context.Context, fiel
 	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _CardPrice_ebay_price(ctx context.Context, field graphql.CollectedField, obj *models.CardPrice) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardPrice_ebay_price(ctx context.Context, field graphql.CollectedField, obj *schema.CardPrice) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1374,7 +1374,7 @@ func (ec *executionContext) _CardPrice_ebay_price(ctx context.Context, field gra
 	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _CardPrice_amazon_price(ctx context.Context, field graphql.CollectedField, obj *models.CardPrice) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardPrice_amazon_price(ctx context.Context, field graphql.CollectedField, obj *schema.CardPrice) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1408,7 +1408,7 @@ func (ec *executionContext) _CardPrice_amazon_price(ctx context.Context, field g
 	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _CardSet_set_name(ctx context.Context, field graphql.CollectedField, obj *models.CardSet) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardSet_set_name(ctx context.Context, field graphql.CollectedField, obj *schema.CardSet) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1442,7 +1442,7 @@ func (ec *executionContext) _CardSet_set_name(ctx context.Context, field graphql
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _CardSet_set_code(ctx context.Context, field graphql.CollectedField, obj *models.CardSet) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardSet_set_code(ctx context.Context, field graphql.CollectedField, obj *schema.CardSet) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1476,7 +1476,7 @@ func (ec *executionContext) _CardSet_set_code(ctx context.Context, field graphql
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _CardSet_set_rarity(ctx context.Context, field graphql.CollectedField, obj *models.CardSet) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardSet_set_rarity(ctx context.Context, field graphql.CollectedField, obj *schema.CardSet) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1510,7 +1510,7 @@ func (ec *executionContext) _CardSet_set_rarity(ctx context.Context, field graph
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _CardSet_set_price(ctx context.Context, field graphql.CollectedField, obj *models.CardSet) (ret graphql.Marshaler) {
+func (ec *executionContext) _CardSet_set_price(ctx context.Context, field graphql.CollectedField, obj *schema.CardSet) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1575,10 +1575,10 @@ func (ec *executionContext) _Query_cards(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*models.Card)
+	res := resTmp.([]*schema.Card)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNCard2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardᚄ(ctx, field.Selections, res)
+	return ec.marshalNCard2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2817,7 +2817,7 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 var banListImplementors = []string{"BanList"}
 
-func (ec *executionContext) _BanList(ctx context.Context, sel ast.SelectionSet, obj *models.BanList) graphql.Marshaler {
+func (ec *executionContext) _BanList(ctx context.Context, sel ast.SelectionSet, obj *schema.BanList) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.RequestContext, sel, banListImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2843,7 +2843,7 @@ func (ec *executionContext) _BanList(ctx context.Context, sel ast.SelectionSet, 
 
 var cardImplementors = []string{"Card"}
 
-func (ec *executionContext) _Card(ctx context.Context, sel ast.SelectionSet, obj *models.Card) graphql.Marshaler {
+func (ec *executionContext) _Card(ctx context.Context, sel ast.SelectionSet, obj *schema.Card) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.RequestContext, sel, cardImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2910,7 +2910,7 @@ func (ec *executionContext) _Card(ctx context.Context, sel ast.SelectionSet, obj
 
 var cardPriceImplementors = []string{"CardPrice"}
 
-func (ec *executionContext) _CardPrice(ctx context.Context, sel ast.SelectionSet, obj *models.CardPrice) graphql.Marshaler {
+func (ec *executionContext) _CardPrice(ctx context.Context, sel ast.SelectionSet, obj *schema.CardPrice) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.RequestContext, sel, cardPriceImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2940,7 +2940,7 @@ func (ec *executionContext) _CardPrice(ctx context.Context, sel ast.SelectionSet
 
 var cardSetImplementors = []string{"CardSet"}
 
-func (ec *executionContext) _CardSet(ctx context.Context, sel ast.SelectionSet, obj *models.CardSet) graphql.Marshaler {
+func (ec *executionContext) _CardSet(ctx context.Context, sel ast.SelectionSet, obj *schema.CardSet) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.RequestContext, sel, cardSetImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -3271,11 +3271,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCard2githubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCard(ctx context.Context, sel ast.SelectionSet, v models.Card) graphql.Marshaler {
+func (ec *executionContext) marshalNCard2githubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCard(ctx context.Context, sel ast.SelectionSet, v schema.Card) graphql.Marshaler {
 	return ec._Card(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCard2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Card) graphql.Marshaler {
+func (ec *executionContext) marshalNCard2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardᚄ(ctx context.Context, sel ast.SelectionSet, v []*schema.Card) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -3299,7 +3299,7 @@ func (ec *executionContext) marshalNCard2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonst
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCard2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCard(ctx, sel, v[i])
+			ret[i] = ec.marshalNCard2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCard(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3312,7 +3312,7 @@ func (ec *executionContext) marshalNCard2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonst
 	return ret
 }
 
-func (ec *executionContext) marshalNCard2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCard(ctx context.Context, sel ast.SelectionSet, v *models.Card) graphql.Marshaler {
+func (ec *executionContext) marshalNCard2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCard(ctx context.Context, sel ast.SelectionSet, v *schema.Card) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3576,11 +3576,11 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 	return res
 }
 
-func (ec *executionContext) marshalOBanList2githubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐBanList(ctx context.Context, sel ast.SelectionSet, v models.BanList) graphql.Marshaler {
+func (ec *executionContext) marshalOBanList2githubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐBanList(ctx context.Context, sel ast.SelectionSet, v schema.BanList) graphql.Marshaler {
 	return ec._BanList(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOBanList2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐBanList(ctx context.Context, sel ast.SelectionSet, v *models.BanList) graphql.Marshaler {
+func (ec *executionContext) marshalOBanList2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐBanList(ctx context.Context, sel ast.SelectionSet, v *schema.BanList) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -3610,22 +3610,22 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOCardPrice2githubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardPrice(ctx context.Context, sel ast.SelectionSet, v models.CardPrice) graphql.Marshaler {
+func (ec *executionContext) marshalOCardPrice2githubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardPrice(ctx context.Context, sel ast.SelectionSet, v schema.CardPrice) graphql.Marshaler {
 	return ec._CardPrice(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOCardPrice2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardPrice(ctx context.Context, sel ast.SelectionSet, v *models.CardPrice) graphql.Marshaler {
+func (ec *executionContext) marshalOCardPrice2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardPrice(ctx context.Context, sel ast.SelectionSet, v *schema.CardPrice) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._CardPrice(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOCardSet2githubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardSet(ctx context.Context, sel ast.SelectionSet, v models.CardSet) graphql.Marshaler {
+func (ec *executionContext) marshalOCardSet2githubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardSet(ctx context.Context, sel ast.SelectionSet, v schema.CardSet) graphql.Marshaler {
 	return ec._CardSet(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOCardSet2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardSet(ctx context.Context, sel ast.SelectionSet, v []*models.CardSet) graphql.Marshaler {
+func (ec *executionContext) marshalOCardSet2ᚕᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardSet(ctx context.Context, sel ast.SelectionSet, v []*schema.CardSet) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -3652,7 +3652,7 @@ func (ec *executionContext) marshalOCardSet2ᚕᚖgithubᚗcomᚋcamisetagsᚋmo
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOCardSet2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardSet(ctx, sel, v[i])
+			ret[i] = ec.marshalOCardSet2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardSet(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3665,7 +3665,7 @@ func (ec *executionContext) marshalOCardSet2ᚕᚖgithubᚗcomᚋcamisetagsᚋmo
 	return ret
 }
 
-func (ec *executionContext) marshalOCardSet2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋmodelsᚐCardSet(ctx context.Context, sel ast.SelectionSet, v *models.CardSet) graphql.Marshaler {
+func (ec *executionContext) marshalOCardSet2ᚖgithubᚗcomᚋcamisetagsᚋmonster_duel_api_goᚋschemaᚐCardSet(ctx context.Context, sel ast.SelectionSet, v *schema.CardSet) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

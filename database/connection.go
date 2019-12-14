@@ -1,16 +1,24 @@
 package database
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	
+	// Will automaticaly be used on gorm connection opening
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var connection *gorm.DB
 
 func openConnection() *gorm.DB {
-	connection, err := gorm.Open("")
+	// POSTGRES_USER: 'postgres'
+	// POSTGRES_PASSWORD: 'postgres'
+	// POSTGRES_DB: 'yugi-database'
+
+	connection, err := gorm.Open("postgres", "host=localhost port=54322 user=postgres dbname=yugi-database password=postgres sslmode=disable")
 
 	if err != nil {
+		fmt.Println(err)
 		panic("Could not connect to database.")
 	}
 
