@@ -1,0 +1,44 @@
+type Card {
+  id: ID!
+  name: String
+  type: String
+  desc: String
+  atk: String
+  def: String
+  level: String
+  race: String
+  attribute: String
+  card_sets: [CardSet]
+  card_prices: CardPrice
+  archetype: String
+  linkval: String
+  fname: String
+  rank: String
+  linkmarkers: [String]
+  banlist_info: BanList
+  format: String
+  sort: String
+  la: String
+  scale: String 
+}
+
+type CardSet {
+  set_name: String
+  set_code: String
+  set_rarity: String
+  set_price: String
+}
+
+
+type BanList {
+  ban_tcg: String
+  ban_ocg: String
+}
+
+
+type CardPrice {
+  cardmarket_price: Float
+  tcgplayer_price:  Float
+  ebay_price:  Float
+  amazon_price:  Float
+}
