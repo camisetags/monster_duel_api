@@ -11,8 +11,8 @@ exec:
   package: generated
 
 model:
-  filename: schema/generated.go
-  package: schema
+  filename: models/generated.go
+  package: models
 
 struct_tag: json
 

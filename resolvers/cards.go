@@ -8,7 +8,7 @@ import (
 	"monster_duel_api/generated"
 	"monster_duel_api/database"
 	"monster_duel_api/repos"
-	"monster_duel_api/schema"
+	"monster_duel_api/models"
 )
 
 type cardResolver struct{ *Resolver }
@@ -18,8 +18,8 @@ func (r *Resolver) Card() generated.CardResolver {
 	return &cardResolver{r}
 }
 
-func (cr *cardResolver) CardSets(ctx context.Context, obj *schema.Card) ([]*schema.CardSet, error) {
-	var cs []*schema.CardSet
+func (cr *cardResolver) CardSets(ctx context.Context, obj *models.Card) ([]*models.CardSet, error) {
+	var cs []*models.CardSet
 	cardSetsBlob := []byte(*obj.CardSetsString)
 
 	err := json.Unmarshal(cardSetsBlob, &cs)
@@ -32,8 +32,8 @@ func (cr *cardResolver) CardSets(ctx context.Context, obj *schema.Card) ([]*sche
 	return cs, nil
 }
 
-func (cr *cardResolver) CardPrices(ctx context.Context, obj *schema.Card) (*schema.CardPrice, error) {
-	var cardPrice *schema.CardPrice
+func (cr *cardResolver) CardPrices(ctx context.Context, obj *models.Card) (*models.CardPrice, error) {
+	var cardPrice *models.CardPrice
 	cardPricesBlob := []byte(*obj.CardPricesString)
 
 	err := json.Unmarshal(cardPricesBlob, &cardPrice)
@@ -47,7 +47,7 @@ func (cr *cardResolver) CardPrices(ctx context.Context, obj *schema.Card) (*sche
 }
 
 // Linkmarkers resolver
-func (cr *cardResolver) Linkmarkers(ctx context.Context, obj *schema.Card) ([]*string, error) {
+func (cr *cardResolver) Linkmarkers(ctx context.Context, obj *models.Card) ([]*string, error) {
 	var linkmarker []*string
 	linkMarkerBlob := []byte(*obj.LinkmarkersString)
 
@@ -62,8 +62,8 @@ func (cr *cardResolver) Linkmarkers(ctx context.Context, obj *schema.Card) ([]*s
 }
 
 // BanlistInfo resolver
-func (cr *cardResolver) BanlistInfo(ctx context.Context, obj *schema.Card) (*schema.BanList, error) {
-	var banList *schema.BanList
+func (cr *cardResolver) BanlistInfo(ctx context.Context, obj *models.Card) (*models.BanList, error) {
+	var banList *models.BanList
 	banListBlob := []byte(*obj.BanListInfoString)
 
 	err := json.Unmarshal(banListBlob, &banList)
@@ -77,7 +77,7 @@ func (cr *cardResolver) BanlistInfo(ctx context.Context, obj *schema.Card) (*sch
 }
 
 // Cards resolver to list cards
-func (r *queryResolver) Cards(ctx context.Context) ([]*schema.Card, error) {
+func (r *queryResolver) Cards(ctx context.Context) ([]*models.Card, error) {
 	db := database.GetDBConnection()
 	repo := &repos.CardRepo{}
 	cards := repo.GetCards(10, db)

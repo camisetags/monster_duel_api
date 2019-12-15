@@ -1,45 +1,100 @@
 package models
 
 import (
+	// "fmt"
 	"time"
-	
+	// "encoding/json"
+
 	"github.com/jinzhu/gorm"
-	// "monster_duel_api/schema"
 )
 
-// CardModel struct
-type CardModel struct {
-	gorm.Model
-	
-	ID          int        `json:"id"`
-	Name        string     `json:"name"`
-	Type        string     `json:"type"`
-	Desc        *string    `json:"desc"`
-	Atk         *string    `json:"atk"`
-	Def         *string    `json:"def"`
-	Level       *string    `json:"level"`
-	Race        *string    `json:"race"`
-	Attribute   *string    `json:"attribute"`
+// BanList struct
+type BanList struct {
+	BanTcg *string `json:"ban_tcg"`
+	BanOcg *string `json:"ban_ocg"`
+}
 
-	Archetype   *string    `json:"archetype"`
-	Linkval     *string    `json:"linkval"`
-	Fname       *string    `json:"fname"`
-	Rank        *string    `json:"rank"`
+// CardPrice struct
+type CardPrice struct {
+	CardmarketPrice *string `json:"cardmarket_price"`
+	TcgplayerPrice  *string `json:"tcgplayer_price"`
+	EbayPrice       *string `json:"ebay_price"`
+	AmazonPrice     *string `json:"amazon_price"`
+}
+
+//CardSet struct
+type CardSet struct {
+	SetName   *string `json:"set_name"`
+	SetCode   *string `json:"set_code"`
+	SetRarity *string `json:"set_rarity"`
+	SetPrice  *string `json:"set_price"`
+}
+
+// Card struct
+type Card struct {
+	gorm.Model
+	ID          		int        `json:"id"`
+	Name        		string     `json:"name"`
+	Type        		string     `json:"type"`
+	Desc        		*string    `json:"desc"`
+	Atk         		*string    `json:"atk"`
+	Def         		*string    `json:"def"`
+	Level       		*string    `json:"level"`
+	Race        		*string    `json:"race"`
+	Attribute   		*string    `json:"attribute"`
+	Archetype   		*string    `json:"archetype"`
+	Linkval     		*string    `json:"linkval"`
+	Fname       		*string    `json:"fname"`
+	Rank        		*string    `json:"rank"`
+	Format      		*string    `json:"format"`
+	Sort        		*string    `json:"sort"`
+	La          		*string    `json:"la"`
+	Scale       		*string    `json:"scale"`
 	
-	Format      *string    `json:"format"`
-	Sort        *string    `json:"sort"`
-	La          *string    `json:"la"`
-	Scale       *string    `json:"scale"`
-	
-	Linkmarkers *string  `json:"linkmarkers"`
-	CardSets    string `json:"card_sets"`
-	CardPrices  string `json:"card_prices"`	
-	BanlistInfo string `json:"banlist_info"`
+	CardSetsString    	*string    `json:"card_sets" gorm:"column:card_sets"`
+	CardPricesString  	*string    `json:"card_prices" gorm:"column:card_prices"`
+	LinkmarkersString 	*string    `json:"linkmarkers" gorm:"column:linkmarkers"`
+	BanListInfoString 	*string    `json:"banlist_info" gorgm:"banlist_info"`
+
 	DeletedAt	*time.Time
 }
-	
-// TableName sets table name
-func (CardModel) TableName() string {
-	return "cards"
-}
 
+// // CardPrices resolver
+// func (c *Card) CardPrices() *CardPrice {
+// 	var cs *CardPrice
+// 	cardSetsBlob := []byte(*c.CardPricesString)
+
+// 	err := json.Unmarshal(cardSetsBlob, &cs)
+
+// 	if err != nil {
+// 		fmt.Println("Could not convert card_sets")
+// 		return nil
+// 	}
+
+// 	return cs
+// }
+
+// // Card struct
+// type Card struct {
+// 	ID          int        `json:"id"`
+// 	Name        string     `json:"name"`
+// 	Type        string     `json:"type"`
+// 	Desc        *string    `json:"desc"`
+// 	Atk         *string    `json:"atk"`
+// 	Def         *string    `json:"def"`
+// 	Level       *string    `json:"level"`
+// 	Race        *string    `json:"race"`
+// 	Attribute   *string    `json:"attribute"`
+// 	CardSets    []*CardSet `json:"card_sets"`
+// 	CardPrices  *CardPrice `json:"card_prices"`
+// 	Archetype   *string    `json:"archetype"`
+// 	Linkval     *string    `json:"linkval"`
+// 	Fname       *string    `json:"fname"`
+// 	Rank        *string    `json:"rank"`
+// 	Linkmarkers []*string  `json:"linkmarkers"`
+// 	BanlistInfo *BanList   `json:"banlist_info"`
+// 	Format      *string    `json:"format"`
+// 	Sort        *string    `json:"sort"`
+// 	La          *string    `json:"la"`
+// 	Scale       *string    `json:"scale"`
+// }
