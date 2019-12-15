@@ -1,10 +1,6 @@
 package repos
 
 import (
-	// "fmt"
-	// "encoding/json"
-	// "sync"
-
 	"github.com/jinzhu/gorm"
 	"monster_duel_api/models"
 )

@@ -1,9 +1,7 @@
 package models
 
 import (
-	// "fmt"
 	"time"
-	// "encoding/json"
 
 	"github.com/jinzhu/gorm"
 )
