@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/camisetags/monster_duel_api_go/server"
+	"monster_duel_api/server"
 )
 
 func main() {

@@ -1,7 +1,7 @@
 package resolvers
 
 import (
-	"github.com/camisetags/monster_duel_api_go/generated"
+	"monster_duel_api/generated"
 )
 
 // Resolver struct

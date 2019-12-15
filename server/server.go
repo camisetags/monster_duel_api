@@ -7,8 +7,8 @@ import (
 
 	"github.com/99designs/gqlgen/handler"
 	
-	"github.com/camisetags/monster_duel_api_go/generated"
-	"github.com/camisetags/monster_duel_api_go/resolvers"
+	"monster_duel_api/generated"
+	"monster_duel_api/resolvers"
 )
 
 const defaultPort = "8080"
@@ -23,8 +23,13 @@ func (s Server) Run() {
 		port = defaultPort
 	}
 
+	schema := generated.NewExecutableSchema(generated.Config{
+		// Resolvers: &resolvers.Resolver{},
+		Resolvers: &resolvers.Resolver{},
+	})
+
 	http.Handle("/", handler.Playground("GraphQL playground", "/graphql"))
-	http.Handle("/graphql", handler.GraphQL(generated.NewExecutableSchema(generated.Config{Resolvers: &resolvers.Resolver{}})))
+	http.Handle("/graphql", handler.GraphQL(schema))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
