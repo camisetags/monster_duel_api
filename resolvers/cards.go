@@ -33,7 +33,7 @@ func (cr *cardResolver) CardSets(ctx context.Context, obj *models.Card) ([]*mode
 
 	if err != nil {
 		fmt.Println("Could not convert card_sets")
-		return nil, nil
+		return nil, err
 	}
 
 	return cs, nil
@@ -49,8 +49,8 @@ func (cr *cardResolver) CardPrices(ctx context.Context, obj *models.Card) (*mode
 	err := json.Unmarshal(cardPricesBlob, &cardPrice)
 
 	if err != nil {
-		fmt.Println("Could not convert card_sets")
-		return nil, nil
+		fmt.Println("Could not convert card_prices")
+		return nil, err
 	}
 
 	return cardPrice, nil
@@ -67,7 +67,7 @@ func (cr *cardResolver) Linkmarkers(ctx context.Context, obj *models.Card) ([]*s
 	err := json.Unmarshal(linkMarkerBlob, &linkmarker)
 
 	if err != nil {
-		fmt.Println("Could not convert card_sets")
+		fmt.Println("Could not convert linkmarkers")
 		return nil, err
 	}
 
@@ -85,8 +85,8 @@ func (cr *cardResolver) BanlistInfo(ctx context.Context, obj *models.Card) (*mod
 	err := json.Unmarshal(banListBlob, &banList)
 
 	if err != nil {
-		fmt.Println("Could not convert card_sets")
-		return nil, nil
+		fmt.Println("Could not convert banlist_info")
+		return nil, err
 	}
 
 	return banList, nil
