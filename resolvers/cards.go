@@ -97,16 +97,8 @@ func (r *queryResolver) Cards(ctx context.Context, limit *int, offset *int) ([]*
 	db := database.GetDBConnection()
 	repo := &repos.CardRepo{ DBConnection: db }
 
-	verifiedLimit := *limit
-	verifiedOffset := *offset
-
-	if limit == nil {
-		verifiedLimit = 30
-	}
-
-	if offset == nil {
-		verifiedOffset = 0
-	}
+	verifiedLimit := setDefaultIfNil(limit, 30).(int)
+	verifiedOffset := setDefaultIfNil(offset, 0).(int)
 
 	cards := repo.GetCards(verifiedLimit, verifiedOffset)
 
@@ -115,4 +107,11 @@ func (r *queryResolver) Cards(ctx context.Context, limit *int, offset *int) ([]*
 
 func (r *queryResolver) Card(ctx context.Context, name *string, id *int) (*models.Card, error) {
 	panic("not implemented")
+}
+
+func setDefaultIfNil(val *int, defaultValue int) interface{} {
+	if val == nil {
+		return defaultValue
+	}
+	return *val
 }
