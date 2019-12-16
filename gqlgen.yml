@@ -21,4 +21,12 @@ resolver:
   package: resolvers
   type: Resolver
 
+models:
+  Card:
+    model: monster_duel_api/models.Card
+    fields:
+      id:
+        resolver: true
+        fieldName: ID
+
 autobind: []

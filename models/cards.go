@@ -31,7 +31,8 @@ type CardSet struct {
 // Card struct
 type Card struct {
 	gorm.Model
-	ID          		int        `json:"id"`
+	
+	ID          		int        `json:"id" gorm:"primary_key"`
 	Name        		string     `json:"name"`
 	Type        		string     `json:"type"`
 	Desc        		*string    `json:"desc"`

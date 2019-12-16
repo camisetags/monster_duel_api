@@ -18,6 +18,10 @@ func (r *Resolver) Card() generated.CardResolver {
 	return &cardResolver{r}
 }
 
+func (cr *cardResolver) ID(ctx context.Context, obj *models.Card) (int, error) {
+	return int(obj.Model.ID), nil
+}
+
 func (cr *cardResolver) CardSets(ctx context.Context, obj *models.Card) ([]*models.CardSet, error) {
 	if obj.CardSetsString == nil {
 		return nil, nil
@@ -89,10 +93,26 @@ func (cr *cardResolver) BanlistInfo(ctx context.Context, obj *models.Card) (*mod
 }
 
 // Cards resolver to list cards
-func (r *queryResolver) Cards(ctx context.Context) ([]*models.Card, error) {
+func (r *queryResolver) Cards(ctx context.Context, limit *int, offset *int) ([]*models.Card, error) {
 	db := database.GetDBConnection()
-	repo := &repos.CardRepo{}
-	cards := repo.GetCards(10, db)
+	repo := &repos.CardRepo{ DBConnection: db }
+
+	verifiedLimit := *limit
+	verifiedOffset := *offset
+
+	if limit == nil {
+		verifiedLimit = 30
+	}
+
+	if offset == nil {
+		verifiedOffset = 0
+	}
+
+	cards := repo.GetCards(verifiedLimit, verifiedOffset)
 
 	return cards, nil
+}
+
+func (r *queryResolver) Card(ctx context.Context, name *string, id *int) (*models.Card, error) {
+	panic("not implemented")
 }
