@@ -11,8 +11,8 @@ type CardRepo struct {
 	DBConnection	*gorm.DB
 }
 
-// GetCards will get a limited list of card model
-func (cr *CardRepo) GetCards(limit int, offset int) []*models.Card {
+// ListCards will get a limited list of card model
+func (cr *CardRepo) ListCards(limit int, offset int) []*models.Card {
 	var cardModelList []*models.Card
 	verifiedLimit := limit
 
@@ -26,4 +26,27 @@ func (cr *CardRepo) GetCards(limit int, offset int) []*models.Card {
 		Find(&cardModelList)
 
 	return cardModelList
+}
+
+// GetCardByName will find card by name
+func (cr *CardRepo) GetCardByName(title string) *models.Card {
+	var card []*models.Card
+	likeTitle := "%"+title+"%"
+
+	cr.DBConnection.	
+		Where("title LIKE = ?", likeTitle).
+		First(&card)
+
+	return card[0]
+}
+
+// GetCardByID will find card by ID
+func (cr *CardRepo) GetCardByID(id int) *models.Card {
+	var card *models.Card
+
+	cr.DBConnection.	
+		Where("id = ?", id).
+		First(&card)
+
+	return card
 }
