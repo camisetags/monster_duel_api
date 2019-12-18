@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"encoding/json"
+	"errors"
 
 	"monster_duel_api/generated"
 	"monster_duel_api/database"
@@ -94,19 +95,32 @@ func (cr *cardResolver) BanlistInfo(ctx context.Context, obj *models.Card) (*mod
 
 // Cards resolver to list cards
 func (r *queryResolver) Cards(ctx context.Context, limit *int, offset *int) ([]*models.Card, error) {
-	db := database.GetDBConnection()
-	repo := &repos.CardRepo{ DBConnection: db }
+	repo := &repos.CardRepo{ 
+		DBConnection: database.GetDBConnection(), 
+	}
 
 	verifiedLimit := setDefaultIfNil(limit, 30).(int)
 	verifiedOffset := setDefaultIfNil(offset, 0).(int)
 
-	cards := repo.GetCards(verifiedLimit, verifiedOffset)
+	cards := repo.ListCards(verifiedLimit, verifiedOffset)
 
 	return cards, nil
 }
 
 func (r *queryResolver) Card(ctx context.Context, name *string, id *int) (*models.Card, error) {
-	panic("not implemented")
+	repo := &repos.CardRepo{ 
+		DBConnection: database.GetDBConnection(),
+	}
+	
+	if name != nil {
+		return repo.GetCardByName(*name), nil
+	}
+
+	if id != nil {
+		return repo.GetCardByID(*id), nil
+	}
+
+	return nil, errors.New("name or id must be set")
 }
 
 func setDefaultIfNil(val *int, defaultValue int) interface{} {
