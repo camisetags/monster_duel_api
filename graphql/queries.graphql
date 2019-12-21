@@ -1,4 +1,5 @@
 type Query {
   cards(limit: Int = 30, offset: Int): [Card]!
-  card(name: String, id: Int): Card
+  cardsByName(name: String!): [Card]!
+  card(id: Int!): Card
 }

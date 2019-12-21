@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"encoding/json"
-	"errors"
 
 	"monster_duel_api/generated"
 	"monster_duel_api/database"
@@ -107,20 +106,18 @@ func (r *queryResolver) Cards(ctx context.Context, limit *int, offset *int) ([]*
 	return cards, nil
 }
 
-func (r *queryResolver) Card(ctx context.Context, name *string, id *int) (*models.Card, error) {
+func (r *queryResolver) CardsByName(ctx context.Context, name string) ([]*models.Card, error) {
+	panic("not implemented")
+}
+
+func (r *queryResolver) Card(ctx context.Context, id int) (*models.Card, error) {
 	repo := &repos.CardRepo{ 
 		DBConnection: database.GetDBConnection(),
 	}
-	
-	if name != nil {
-		return repo.GetCardByName(*name), nil
-	}
 
-	if id != nil {
-		return repo.GetCardByID(*id), nil
-	}
+	return repo.GetCardByID(id), nil
 
-	return nil, errors.New("name or id must be set")
+	// return nil, errors.New("Id must be set")
 }
 
 func setDefaultIfNil(val *int, defaultValue int) interface{} {
