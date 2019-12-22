@@ -1,5 +1,14 @@
 type Query {
-  cards(limit: Int = 30, offset: Int): [Card]!
-  cardsByName(name: String!): [Card]!
-  card(id: Int!): Card
+  cards(input: CardSearchInput): [Card]!
+  card(id: Int, name: String): Card
+}
+
+input CardSearchFieldInput {
+  name: String
+}
+
+input CardSearchInput {
+  by: CardSearchFieldInput
+  limit: Int
+  offset: Int
 }

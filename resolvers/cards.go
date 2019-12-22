@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"encoding/json"
 
+	"monster_duel_api/inputs"
 	"monster_duel_api/generated"
 	"monster_duel_api/database"
 	"monster_duel_api/repos"
@@ -93,10 +94,13 @@ func (cr *cardResolver) BanlistInfo(ctx context.Context, obj *models.Card) (*mod
 }
 
 // Cards resolver to list cards
-func (r *queryResolver) Cards(ctx context.Context, limit *int, offset *int) ([]*models.Card, error) {
+func (r *queryResolver) Cards(ctx context.Context, input *inputs.CardSearchInput) ([]*models.Card, error) {
 	repo := &repos.CardRepo{ 
 		DBConnection: database.GetDBConnection(), 
 	}
+
+	limit := input.Limit
+	offset := input.Offset
 
 	verifiedLimit := setDefaultIfNil(limit, 30).(int)
 	verifiedOffset := setDefaultIfNil(offset, 0).(int)

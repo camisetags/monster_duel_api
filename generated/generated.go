@@ -87,9 +87,8 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Card        func(childComplexity int, id int) int
-		Cards       func(childComplexity int, limit *int, offset *int) int
-		CardsByName func(childComplexity int, name string) int
+		Card  func(childComplexity int, id *int, name *string) int
+		Cards func(childComplexity int, input *models.CardSearchInput) int
 	}
 }
 
@@ -102,9 +101,8 @@ type CardResolver interface {
 	BanlistInfo(ctx context.Context, obj *models.Card) (*models.BanList, error)
 }
 type QueryResolver interface {
-	Cards(ctx context.Context, limit *int, offset *int) ([]*models.Card, error)
-	CardsByName(ctx context.Context, name string) ([]*models.Card, error)
-	Card(ctx context.Context, id int) (*models.Card, error)
+	Cards(ctx context.Context, input *models.CardSearchInput) ([]*models.Card, error)
+	Card(ctx context.Context, id *int, name *string) (*models.Card, error)
 }
 
 type executableSchema struct {
@@ -349,7 +347,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Card(childComplexity, args["id"].(int)), true
+		return e.complexity.Query.Card(childComplexity, args["id"].(*int), args["name"].(*string)), true
 
 	case "Query.cards":
 		if e.complexity.Query.Cards == nil {
@@ -361,19 +359,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Cards(childComplexity, args["limit"].(*int), args["offset"].(*int)), true
-
-	case "Query.cardsByName":
-		if e.complexity.Query.CardsByName == nil {
-			break
-		}
-
-		args, err := ec.field_Query_cardsByName_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.CardsByName(childComplexity, args["name"].(string)), true
+		return e.complexity.Query.Cards(childComplexity, args["input"].(*models.CardSearchInput)), true
 
 	}
 	return 0, false
@@ -425,9 +411,18 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 
 var parsedSchema = gqlparser.MustLoadSchema(
 	&ast.Source{Name: "graphql/queries.graphql", Input: `type Query {
-  cards(limit: Int = 30, offset: Int): [Card]!
-  cardsByName(name: String!): [Card]!
-  card(id: Int!): Card
+  cards(input: CardSearchInput): [Card]!
+  card(id: Int, name: String): Card
+}
+
+input CardSearchFieldInput {
+  name: String
+}
+
+input CardSearchInput {
+  by: CardSearchFieldInput
+  limit: Int
+  offset: Int
 }
 `},
 	&ast.Source{Name: "graphql/types.graphql", Input: `type Card {
@@ -503,50 +498,36 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 func (ec *executionContext) field_Query_card_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 int
+	var arg0 *int
 	if tmp, ok := rawArgs["id"]; ok {
-		arg0, err = ec.unmarshalNInt2int(ctx, tmp)
+		arg0, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
 	args["id"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_cardsByName_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
+	var arg1 *string
 	if tmp, ok := rawArgs["name"]; ok {
-		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		arg1, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["name"] = arg0
+	args["name"] = arg1
 	return args, nil
 }
 
 func (ec *executionContext) field_Query_cards_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *int
-	if tmp, ok := rawArgs["limit"]; ok {
-		arg0, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+	var arg0 *models.CardSearchInput
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalOCardSearchInput2ᚖmonster_duel_apiᚋmodelsᚐCardSearchInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["limit"] = arg0
-	var arg1 *int
-	if tmp, ok := rawArgs["offset"]; ok {
-		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["offset"] = arg1
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -1675,51 +1656,7 @@ func (ec *executionContext) _Query_cards(ctx context.Context, field graphql.Coll
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Cards(rctx, args["limit"].(*int), args["offset"].(*int))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*models.Card)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNCard2ᚕᚖmonster_duel_apiᚋmodelsᚐCard(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Query_cardsByName(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Query",
-		Field:    field,
-		Args:     nil,
-		IsMethod: true,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_cardsByName_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	rctx.Args = args
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().CardsByName(rctx, args["name"].(string))
+		return ec.resolvers.Query().Cards(rctx, args["input"].(*models.CardSearchInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1763,7 +1700,7 @@ func (ec *executionContext) _Query_card(ctx context.Context, field graphql.Colle
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Card(rctx, args["id"].(int))
+		return ec.resolvers.Query().Card(rctx, args["id"].(*int), args["name"].(*string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3004,6 +2941,54 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputCardSearchFieldInput(ctx context.Context, obj interface{}) (models.CardSearchFieldInput, error) {
+	var it models.CardSearchFieldInput
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "name":
+			var err error
+			it.Name, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputCardSearchInput(ctx context.Context, obj interface{}) (models.CardSearchInput, error) {
+	var it models.CardSearchInput
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "by":
+			var err error
+			it.By, err = ec.unmarshalOCardSearchFieldInput2ᚖmonster_duel_apiᚋmodelsᚐCardSearchFieldInput(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "limit":
+			var err error
+			it.Limit, err = ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "offset":
+			var err error
+			it.Offset, err = ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -3240,20 +3225,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_cards(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
-		case "cardsByName":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_cardsByName(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -3889,6 +3860,30 @@ func (ec *executionContext) marshalOCardPrice2ᚖmonster_duel_apiᚋmodelsᚐCar
 		return graphql.Null
 	}
 	return ec._CardPrice(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOCardSearchFieldInput2monster_duel_apiᚋmodelsᚐCardSearchFieldInput(ctx context.Context, v interface{}) (models.CardSearchFieldInput, error) {
+	return ec.unmarshalInputCardSearchFieldInput(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOCardSearchFieldInput2ᚖmonster_duel_apiᚋmodelsᚐCardSearchFieldInput(ctx context.Context, v interface{}) (*models.CardSearchFieldInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOCardSearchFieldInput2monster_duel_apiᚋmodelsᚐCardSearchFieldInput(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) unmarshalOCardSearchInput2monster_duel_apiᚋmodelsᚐCardSearchInput(ctx context.Context, v interface{}) (models.CardSearchInput, error) {
+	return ec.unmarshalInputCardSearchInput(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOCardSearchInput2ᚖmonster_duel_apiᚋmodelsᚐCardSearchInput(ctx context.Context, v interface{}) (*models.CardSearchInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOCardSearchInput2monster_duel_apiᚋmodelsᚐCardSearchInput(ctx, v)
+	return &res, err
 }
 
 func (ec *executionContext) marshalOCardSet2monster_duel_apiᚋmodelsᚐCardSet(ctx context.Context, sel ast.SelectionSet, v models.CardSet) graphql.Marshaler {
