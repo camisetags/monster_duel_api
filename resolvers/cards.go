@@ -99,13 +99,18 @@ func (r *queryResolver) Cards(ctx context.Context, input *models.CardSearchInput
 		DBConnection: database.GetDBConnection(), 
 	}
 
-	limit := input.Limit
-	offset := input.Offset
+	verifiedLimit, verifiedOffset := setPaginationLimits(input.Limit, input.Offset)
+	var cards []*models.Card
 
-	verifiedLimit := setDefaultIfNil(limit, 30).(int)
-	verifiedOffset := setDefaultIfNil(offset, 0).(int)
-
-	cards := repo.ListCards(verifiedLimit, verifiedOffset)
+	if input.By != nil && input.By.Name != nil {
+		cards = repo.ListCardByName(
+			*input.By.Name, 
+			verifiedLimit,
+			verifiedOffset,
+		)
+	} else {
+		cards = repo.ListCards(verifiedLimit, verifiedOffset)
+	}
 
 	return cards, nil
 }
@@ -125,6 +130,13 @@ func (r *queryResolver) Card(ctx context.Context, id *int, name *string) (*model
 	}
 
 	return nil, errors.New("Id or name must be set")
+}
+
+func setPaginationLimits(limit *int, offset *int) (int, int) {
+	verifiedLimit := setDefaultIfNil(limit, 30).(int)
+	verifiedOffset := setDefaultIfNil(offset, 0).(int)
+
+	return verifiedLimit, verifiedOffset
 }
 
 func setDefaultIfNil(val *int, defaultValue int) interface{} {
