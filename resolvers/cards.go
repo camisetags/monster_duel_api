@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"encoding/json"
+	"errors"
 
-	"monster_duel_api/inputs"
 	"monster_duel_api/generated"
 	"monster_duel_api/database"
 	"monster_duel_api/repos"
@@ -94,7 +94,7 @@ func (cr *cardResolver) BanlistInfo(ctx context.Context, obj *models.Card) (*mod
 }
 
 // Cards resolver to list cards
-func (r *queryResolver) Cards(ctx context.Context, input *inputs.CardSearchInput) ([]*models.Card, error) {
+func (r *queryResolver) Cards(ctx context.Context, input *models.CardSearchInput) ([]*models.Card, error) {
 	repo := &repos.CardRepo{ 
 		DBConnection: database.GetDBConnection(), 
 	}
@@ -110,18 +110,21 @@ func (r *queryResolver) Cards(ctx context.Context, input *inputs.CardSearchInput
 	return cards, nil
 }
 
-func (r *queryResolver) CardsByName(ctx context.Context, name string) ([]*models.Card, error) {
-	panic("not implemented")
-}
 
-func (r *queryResolver) Card(ctx context.Context, id int) (*models.Card, error) {
+func (r *queryResolver) Card(ctx context.Context, id *int, name *string) (*models.Card, error) {
 	repo := &repos.CardRepo{ 
 		DBConnection: database.GetDBConnection(),
 	}
 
-	return repo.GetCardByID(id), nil
+	if id != nil {
+		return repo.GetCardByID(*id), nil
+	}
 
-	// return nil, errors.New("Id must be set")
+	if name != nil {
+		return repo.GetCardByName(*name), nil
+	}
+
+	return nil, errors.New("Id or name must be set")
 }
 
 func setDefaultIfNil(val *int, defaultValue int) interface{} {

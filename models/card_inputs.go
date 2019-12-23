@@ -1,4 +1,4 @@
-package inputs
+package models
 
 // CardSearchFieldInput struct
 type CardSearchFieldInput struct {

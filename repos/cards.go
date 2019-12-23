@@ -31,10 +31,10 @@ func (cr *CardRepo) ListCards(limit int, offset int) []*models.Card {
 // GetCardByName will find card by name
 func (cr *CardRepo) GetCardByName(title string) *models.Card {
 	var card models.Card
-	likeTitle := "%"+title+"%"
+	// likeTitle := "%"+title+"%"
 
 	cr.DBConnection.	
-		Where("title LIKE = ?", likeTitle).
+		Where("title LIKE = ?", title).
 		First(&card)
 
 	return &card
